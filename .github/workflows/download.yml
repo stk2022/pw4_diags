@@ -1,0 +1,25 @@
+name: One-Time Download
+
+on: 
+  workflow_dispatch: # This adds the manual "Run" button
+
+jobs:
+  run-once:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download
+        run: curl -L "https://nextalg.com/pw4_diags.bin" -o "pw4_diags.bin"
+
+      - name: Push to Root
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "One-time file download"
+          git push
